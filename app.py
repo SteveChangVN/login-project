@@ -146,6 +146,18 @@ class FeedbackForm(FlaskForm):
 # ROUTES — BUYER
 # =======================
 
+@app.route("/admin-db")
+@login_required
+def view_db():
+    # chỉ cho admin xem (rất quan trọng)
+    if current_user.role != "admin":
+        return "Access denied"
+
+    users = User.query.all()
+    return render_template("db.html", users=users)
+
+
+
 @app.route("/")
 def home():
     products = Product.query.all()

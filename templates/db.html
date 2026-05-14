@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Database</title>
+</head>
+<body>
+
+<h1>USER DATABASE</h1>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Phone</th>
+        <th>Address</th>
+    </tr>
+
+    {% for u in users %}
+    <tr>
+        <td>{{u.id}}</td>
+        <td>{{u.username}}</td>
+        <td>{{u.phone}}</td>
+        <td>{{u.address}}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+</body>
+</html>
