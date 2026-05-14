@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="products-header">
+    <div>
+        <h1 class="page-title">All Products</h1>
+        <p class="page-subtitle">Discover our curated collection</p>
+    </div>
+    <span class="products-count">{{ products|length }} items</span>
+</div>
+
+<div class="products">
+    {% for product in products %}
+    <div class="product-card">
+        <div class="product-card__image-wrap">
+            <img src="{{ product.image }}" alt="{{ product.name }}">
+        </div>
+        <div class="product-card__body">
+            <h3 class="product-card__name">{{ product.name }}</h3>
+            <p class="product-card__desc">{{ product.description }}</p>
+            <div class="product-card__footer">
+                <span class="price">{{ "{:,.0f}".format(product.price) }} ₫</span>
+                <a href="{{ url_for('product_detail', product_id=product.id) }}" class="card-btn">
+                    View →
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

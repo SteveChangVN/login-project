@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="detail-container">
+
+    <div class="detail-breadcrumb">
+        <a href="/">Shop</a> &nbsp;/&nbsp;
+        <a href="/cart">Cart</a> &nbsp;/&nbsp;
+        Checkout
+    </div>
+
+    <h1 class="page-title">Checkout</h1>
+
+    <div class="checkout-grid">
+
+        <!-- LEFT: Delivery form -->
+        <div class="checkout-form-wrap">
+            <h2 class="checkout-section-title">Delivery Information</h2>
+
+            <form method="POST" action="{{ url_for('place_order') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" name="full_name" placeholder="Your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="text" name="phone" placeholder="Your phone number" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <input type="text" name="address" placeholder="Delivery address" required>
+                </div>
+
+                <div class="checkout-payment">
+                    <h2 class="checkout-section-title">Payment Method</h2>
+                    <div class="payment-option selected">
+                        💵 Cash on Delivery (COD)
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-buy" style="margin-top: 24px;">
+                    Place Order
+                </button>
+            </form>
+        </div>
+
+        <!-- RIGHT: Order summary -->
+        <div class="checkout-summary">
+            <h2 class="checkout-section-title">Order Summary</h2>
+
+            {% for item in items %}
+            <div class="summary-item">
+                <span class="summary-name">
+                    {{ item.product.name }}
+                    <small>x{{ item.quantity }}</small>
+                </span>
+                <span class="summary-price">
+                    {{ "{:,.0f}".format(item.product.price * item.quantity) }} ₫
+                </span>
+            </div>
+            {% endfor %}
+
+            <div class="summary-total">
+                <span>Total</span>
+                <strong>{{ "{:,.0f}".format(total) }} ₫</strong>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

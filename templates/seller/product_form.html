@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="seller-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="seller-sidebar">
+        <div class="sidebar-brand">◈ Seller Panel</div>
+        <nav class="sidebar-nav">
+            <a href="/seller" class="sidebar-link">📊 Dashboard</a>
+            <a href="/seller/products" class="sidebar-link active">📦 My Products</a>
+            <a href="/seller/orders" class="sidebar-link">🧾 My Orders</a>
+            <a href="/" class="sidebar-link">🛍 View Shop</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="seller-main">
+
+        <div class="seller-header">
+            <h1 class="page-title">{{ title }}</h1>
+        </div>
+
+        <div class="auth-card" style="max-width: 600px;">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+                <div class="form-group">
+                    <label class="form-label">Product Name</label>
+                    {{ form.name(placeholder="e.g. iPhone 15 Pro") }}
+                    {% for error in form.name.errors %}
+                        <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Price (₫)</label>
+                    {{ form.price(placeholder="e.g. 25000000") }}
+                    {% for error in form.price.errors %}
+                        <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Image URL</label>
+                    {{ form.image(placeholder="https://...") }}
+                    {% for error in form.image.errors %}
+                        <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    {{ form.description(placeholder="Describe your product...", rows=4,
+                       style="width:100%; padding:11px 14px; border:1px solid var(--ivory-dark); border-radius:6px; font-family:var(--sans); font-size:15px; resize:vertical; background:var(--cream); outline:none;") }}
+                    {% for error in form.description.errors %}
+                        <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                {{ form.submit(class="btn-submit") }}
+            </form>
+
+            <div style="margin-top:16px;">
+                <a href="/seller/products" class="btn-back">← Back to products</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

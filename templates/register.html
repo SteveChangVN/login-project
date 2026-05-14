@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="auth-wrap">
+    <div class="auth-card">
+
+        <div class="auth-logo">
+            <span>◈</span> MyShop
+        </div>
+
+        <h1 class="auth-title">Create account</h1>
+        <p class="auth-subtitle">Join MyShop as a buyer or seller</p>
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                {{ form.username(placeholder="4–20 characters") }}
+                {% for error in form.username.errors %}
+                    <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                {{ form.password(placeholder="4–20 characters") }}
+                {% for error in form.password.errors %}
+                    <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Account type</label>
+                {{ form.role() }}
+            </div>
+
+            <div id="sellerFields" class="seller-fields" style="display:none;">
+                <div class="seller-label">◈ Seller information</div>
+
+                <div class="form-group" style="margin-bottom:16px;">
+                    <label class="form-label">Phone</label>
+                    {{ form.phone(placeholder="Your contact number") }}
+                    {% for error in form.phone.errors %}
+                        <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Address</label>
+                    {{ form.address(placeholder="Your business address") }}
+                    {% for error in form.address.errors %}
+                        <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {{ form.submit(class="btn-submit") }}
+        </form>
+
+        <div class="auth-footer">
+            Already have an account? <a href="/login">Sign in</a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+const roleSelect = document.querySelector("select");
+const sellerFields = document.getElementById("sellerFields");
+
+function toggleSellerFields() {
+    sellerFields.style.display = roleSelect.value === "seller" ? "block" : "none";
+}
+
+toggleSellerFields();
+roleSelect.addEventListener("change", toggleSellerFields);
+</script>
+
+{% endblock %}

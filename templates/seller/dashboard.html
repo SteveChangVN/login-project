@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="seller-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="seller-sidebar">
+        <div class="sidebar-brand">◈ Seller Panel</div>
+        <nav class="sidebar-nav">
+            <a href="/seller" class="sidebar-link {% if request.path == '/seller' %}active{% endif %}">
+                📊 Dashboard
+            </a>
+            <a href="/seller/products" class="sidebar-link {% if '/seller/products' in request.path %}active{% endif %}">
+                📦 My Products
+            </a>
+            <a href="/seller/orders" class="sidebar-link {% if '/seller/orders' in request.path %}active{% endif %}">
+                🧾 My Orders
+            </a>
+            <a href="/" class="sidebar-link">
+                🛍 View Shop
+            </a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="seller-main">
+
+        <div class="seller-header">
+            <h1 class="page-title">Dashboard</h1>
+            <a href="/seller/products/add" class="nav-btn nav-btn--primary">+ Add Product</a>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ products|length }}</div>
+                <div class="stat-label">Products</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ orders|length }}</div>
+                <div class="stat-label">Orders</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ "{:,.0f}".format(total_revenue) }} ₫</div>
+                <div class="stat-label">Total Revenue</div>
+            </div>
+        </div>
+
+        <!-- RECENT ORDERS -->
+        <h2 class="section-title">Recent Orders</h2>
+
+        {% if orders %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders[:5] %}
+                <tr>
+                    <td>#{{ order.id }}</td>
+                    <td>{{ order.user.username }}</td>
+                    <td>{{ order.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td class="cart-subtotal">{{ "{:,.0f}".format(order.total) }} ₫</td>
+                    <td><span class="order-status order-status--{{ order.status }}">{{ order.status }}</span></td>
+                    <td>
+                        <a href="{{ url_for('seller_order_detail', order_id=order.id) }}" class="card-btn">View →</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p style="color: var(--sand); margin-top: 16px;">No orders yet.</p>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

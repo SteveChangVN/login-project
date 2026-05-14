@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="detail-container">
+
+    <div class="detail-breadcrumb">
+        <a href="/">Shop</a> &nbsp;/&nbsp; {{ product.name }}
+    </div>
+
+    <div class="detail-card">
+
+        <div class="detail-img-wrap">
+            <img src="{{ product.image }}" alt="{{ product.name }}" class="detail-img">
+        </div>
+
+        <div class="detail-info">
+            <span class="detail-tag">In Stock</span>
+            <h1 class="detail-name">{{ product.name }}</h1>
+            <div class="detail-price">{{ "{:,.0f}".format(product.price) }} ₫</div>
+
+            <hr class="detail-divider">
+
+            <p class="detail-desc">{{ product.description }}</p>
+
+            <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn-buy">Add to Cart</button>
+            </form>
+
+            <a href="/" class="btn-back">← Back to shop</a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

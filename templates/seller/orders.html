@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="seller-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="seller-sidebar">
+        <div class="sidebar-brand">◈ Seller Panel</div>
+        <nav class="sidebar-nav">
+            <a href="/seller" class="sidebar-link">📊 Dashboard</a>
+            <a href="/seller/products" class="sidebar-link">📦 My Products</a>
+            <a href="/seller/orders" class="sidebar-link active">🧾 My Orders</a>
+            <a href="/" class="sidebar-link">🛍 View Shop</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="seller-main">
+
+        <div class="seller-header">
+            <h1 class="page-title">My Orders</h1>
+        </div>
+
+        {% if orders %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>#{{ order.id }}</td>
+                    <td>{{ order.user.username }}</td>
+                    <td>{{ order.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td class="cart-subtotal">{{ "{:,.0f}".format(order.total) }} ₫</td>
+                    <td><span class="order-status order-status--{{ order.status }}">{{ order.status }}</span></td>
+                    <td><span class="order-status order-status--{{ order.status }}">{{ order.status }}</span></td>
+                    <td>
+                        <a href="{{ url_for('seller_order_detail', order_id=order.id) }}" class="card-btn">View →</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p style="color: var(--sand); margin-top: 16px;">No orders yet.</p>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

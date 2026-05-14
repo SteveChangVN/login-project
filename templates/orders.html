@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="detail-container">
+    <h1 class="page-title">My Orders</h1>
+
+    {% if orders %}
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                <td class="cart-subtotal">{{ "{:,.0f}".format(order.total) }} ₫</td>
+                <td><span class="order-status">{{ order.status }}</span></td>
+                <td>
+                    <a href="{{ url_for('order_detail', order_id=order.id) }}" class="card-btn">
+                        View →
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="cart-empty">
+        <p>You have no orders yet.</p>
+        <a href="/" class="btn-buy" style="display:inline-block; width:auto; padding:12px 32px; margin-top:16px;">
+            Shop now
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

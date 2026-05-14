@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="detail-container">
+
+    <div class="detail-breadcrumb">
+        <a href="/">Shop</a> &nbsp;/&nbsp; Your Cart
+    </div>
+
+    <h1 class="page-title">Your Cart</h1>
+
+    {% if items %}
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>
+                    <div class="cart-product-name">{{ item.product.name }}</div>
+                </td>
+                <td>{{ "{:,.0f}".format(item.product.price) }} ₫</td>
+                <td>
+                    <div class="qty-form">
+                        <form method="POST" action="{{ url_for('update_cart', item_id=item.id) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" name="quantity" value="{{ item.quantity - 1 }}" class="qty-btn">−</button>
+                        </form>
+                        <span class="qty-num">{{ item.quantity }}</span>
+                        <form method="POST" action="{{ url_for('update_cart', item_id=item.id) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" name="quantity" value="{{ item.quantity + 1 }}" class="qty-btn">+</button>
+                        </form>
+                    </div>
+                </td>
+                <td class="cart-subtotal">{{ "{:,.0f}".format(item.product.price * item.quantity) }} ₫</td>
+                <td>
+                    <form method="POST" action="{{ url_for('remove_from_cart', item_id=item.id) }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="remove-btn">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="cart-total">
+        Total: <strong>{{ "{:,.0f}".format(total) }} ₫</strong>
+    </div>
+
+    <div style="text-align: right; margin-top: 24px;">
+        <a href="/checkout" class="btn-buy" style="display:inline-block; width:auto; padding:12px 32px;">
+            Proceed to Checkout →
+        </a>
+    </div>
+
+    <a href="/" class="btn-back" style="margin-top: 24px;">← Continue shopping</a>
+
+    {% else %}
+    <div class="cart-empty">
+        <p>Your cart is empty.</p>
+        <a href="/" class="btn-buy" style="display:inline-block; width:auto; padding: 12px 32px; margin-top:16px;">Shop now</a>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

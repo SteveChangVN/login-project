@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="detail-container">
+
+    <div class="detail-breadcrumb">
+        <a href="/orders">My Orders</a> &nbsp;/&nbsp; Order #{{ order.id }}
+    </div>
+
+    <h1 class="page-title">Order #{{ order.id }}</h1>
+    <p style="color: var(--sand); margin-bottom: 32px;">
+        Placed on {{ order.created_at.strftime('%d/%m/%Y at %H:%M') }}
+    </p>
+
+    <div class="checkout-grid">
+
+        <div class="checkout-summary" style="order: 2;">
+            <h2 class="checkout-section-title">Delivery Info</h2>
+            <div class="order-info-row"><span>Name: </span><strong>{{ order.full_name }}</strong></div>
+            <div class="order-info-row"><span>Phone: </span><strong>{{ order.phone }}</strong></div>
+            <div class="order-info-row"><span>Address: </span><strong>{{ order.address }}</strong></div>
+            <div class="order-info-row"><span>Payment: </span><strong>Cash on Delivery</strong></div>
+            <div class="order-info-row"><span>Status: </span>
+                <strong><span class="order-status">{{ order.status }}</span></strong>
+            </div>
+        </div>
+
+        <div style="order: 1;">
+            <h2 class="checkout-section-title">Items</h2>
+            {% for item in order.items %}
+            <div class="summary-item">
+                <span class="summary-name">
+                    {{ item.product_name }}
+                    <small>x{{ item.quantity }}</small>
+                </span>
+                <span class="summary-price">
+                    {{ "{:,.0f}".format(item.price * item.quantity) }} ₫
+                </span>
+            </div>
+            {% endfor %}
+            <div class="summary-total">
+                <span>Total</span>
+                <strong>{{ "{:,.0f}".format(order.total) }} ₫</strong>
+            </div>
+            <td><a href="/feedback" class="card-btn">
+            Feedback →
+            </a></td>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

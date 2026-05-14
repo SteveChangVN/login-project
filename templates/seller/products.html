@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="seller-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="seller-sidebar">
+        <div class="sidebar-brand">◈ Seller Panel</div>
+        <nav class="sidebar-nav">
+            <a href="/seller" class="sidebar-link">📊 Dashboard</a>
+            <a href="/seller/products" class="sidebar-link active">📦 My Products</a>
+            <a href="/seller/orders" class="sidebar-link">🧾 My Orders</a>
+            <a href="/" class="sidebar-link">🛍 View Shop</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="seller-main">
+
+        <div class="seller-header">
+            <h1 class="page-title">My Products</h1>
+            <a href="/seller/products/add" class="nav-btn nav-btn--primary">+ Add Product</a>
+        </div>
+
+        {% if products %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>
+                        <img src="{{ product.image }}" alt="{{ product.name }}"
+                             style="width:56px; height:56px; object-fit:cover; border-radius:8px;">
+                    </td>
+                    <td><strong>{{ product.name }}</strong></td>
+                    <td class="cart-subtotal">{{ "{:,.0f}".format(product.price) }} ₫</td>
+                    <td style="color: var(--charcoal-60); font-size:13px;">
+                        {{ product.description[:60] }}{% if product.description|length > 60 %}...{% endif %}
+                    </td>
+                    <td>
+                        <div style="display:flex; gap:8px;">
+                            <a href="{{ url_for('seller_edit_product', product_id=product.id) }}" class="card-btn">Edit</a>
+                            <form method="POST" action="{{ url_for('seller_delete_product', product_id=product.id) }}"
+                                  onsubmit="return confirm('Delete this product?')">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="remove-btn"
+                                        style="padding:8px 12px; border:1px solid var(--ivory-dark); border-radius:6px;">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="cart-empty">
+                <p>You have no products yet.</p>
+                <a href="/seller/products/add" class="btn-buy"
+                   style="display:inline-block; width:auto; padding:12px 32px; margin-top:16px;">
+                    Add your first product
+                </a>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}
