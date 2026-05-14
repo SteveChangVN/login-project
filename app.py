@@ -456,6 +456,18 @@ def seller_update_order(order_id):
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
+        if not User.query.filter_by(username="admin").first():
+            admin = User(
+                username="admin",
+                password_nothash="admin123",
+                password=bcrypt.generate_password_hash("admin123").decode("utf-8"),
+                role="admin",
+                phone="",
+                address=""
+            )   
+            db.session.add(admin)
+            db.session.commit()
+            print("Admin account created!")
         if Product.query.count() == 0:
             p1 = Product(
                 name="Iphone 15",
