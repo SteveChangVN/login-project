@@ -119,8 +119,9 @@ class RegisterForm(FlaskForm):
     def validate_phone(self, phone):
         if self.role.data == "seller" and phone.data == "":
             raise ValidationError("Sellers must enter a phone number.")
-        if User.query.filter_by(phone=phone.data).first():
-            raise ValidationError("Phone already exists")
+        if phone.data != "":  # only check duplicate if phone was entered
+            if User.query.filter_by(phone=phone.data).first():
+                raise ValidationError("Phone already exists")
 
     def validate_address(self, address):
         if self.role.data == "seller" and address.data == "":
